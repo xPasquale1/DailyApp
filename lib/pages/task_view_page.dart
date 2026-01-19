@@ -18,9 +18,7 @@ class _TaskViewPageState extends State<TaskViewPage> {
 
   @override
   void initState() {
-    titleController = TextEditingController(
-      text: widget.task.title,
-    );
+    titleController = TextEditingController(text: widget.task.title);
     descriptionController = TextEditingController(
       text: widget.task.description,
     );
@@ -68,6 +66,24 @@ class _TaskViewPageState extends State<TaskViewPage> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
             TextField(maxLines: null, controller: descriptionController),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(40),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: Text(
+                    'Delete Task',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
