@@ -98,7 +98,7 @@ class _FinancialsPageState extends State<FinancialsPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, {}),
+              onPressed: () => Navigator.pop(context, <String, String>{}),
               child: const Text('Cancel'),
             ),
             ElevatedButton(
@@ -159,14 +159,23 @@ class _FinancialsPageState extends State<FinancialsPage> {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: financials.map((financial) {
-                return FinancialWidget(
-                  financial: financial,
-                  onPress: (financial) => onFinancialPressed(financial),
-                );
-              }).toList(),
-            ),
+            child: financials.isNotEmpty
+                ? ListView(
+                    children: financials.map((financial) {
+                      return FinancialWidget(
+                        financial: financial,
+                        onPress: (financial) => onFinancialPressed(financial),
+                      );
+                    }).toList(),
+                  )
+                : Container(
+                    padding: EdgeInsets.all(64),
+                    child: Align(
+                      child: Text(
+                        'There are currently no entries. Add them using the Plus-Button.',
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),

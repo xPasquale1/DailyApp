@@ -50,66 +50,86 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(24),
             margin: EdgeInsets.only(left: 32, right: 32, top: 16, bottom: 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: Colors.grey.shade900,
             ),
-            child: FutureBuilder(
-              future: getOpenTasksCount(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text(
-                    'Open Tasks: ...',
+            child: Column(
+              children: [
+                Align(
+                  alignment: AlignmentGeometry.centerLeft,
+                  child: Text(
+                    'Open Tasks:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  );
-                }
-                return Text(
-                  'Open Tasks: ${snapshot.data}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                );
-              },
+                  ),
+                ),
+                FutureBuilder(
+                  future: getOpenTasksCount(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text(
+                        '...',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32,
+                        ),
+                      );
+                    }
+                    return Text(
+                      '${snapshot.data}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
           Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(24),
             margin: EdgeInsets.only(left: 32, right: 32, top: 16, bottom: 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: Colors.grey.shade900,
             ),
-            child: FutureBuilder(
-              future: calculateTotal(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text(
-                    'Financials: ...',
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Financials:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  );
-                }
-                return Row(
-                  children: [
-                    Text(
-                      'Financials: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                    ),
-                    Text(
+                  ),
+                ),
+                FutureBuilder(
+                  future: calculateTotal(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text(
+                        '...',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
+                      );
+                    }
+                    return Text(
                       snapshot.data! >= 0
                           ? '+${euroFormatter.format(snapshot.data)}'
                           : euroFormatter.format(snapshot.data),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                        fontSize: 32,
                         color: snapshot.data! >= 0 ? Colors.green : Colors.red,
                       ),
-                    ),
-                  ],
-                );
-              },
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ],

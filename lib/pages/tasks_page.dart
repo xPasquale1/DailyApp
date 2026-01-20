@@ -91,15 +91,24 @@ class _TaskPageState extends State<TasksPage> {
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        children: tasks.map((task) {
-          return TaskItem(
-            task: task,
-            onToggle: (task) => onTaskCompleted(task),
-            onPress: (task) => onTaskPressed(task),
-          );
-        }).toList(),
-      ),
+      body: tasks.isNotEmpty
+          ? ListView(
+              children: tasks.map((task) {
+                return TaskItem(
+                  task: task,
+                  onToggle: (task) => onTaskCompleted(task),
+                  onPress: (task) => onTaskPressed(task),
+                );
+              }).toList(),
+            )
+          : Container(
+            padding: EdgeInsets.all(64),
+              child: Align(
+                child: Text(
+                  'There are currently no tasks. Add them using the Plus-Button.',
+                ),
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: addTaskDialog,
         child: Icon(Icons.add),
