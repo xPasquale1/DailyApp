@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_app/components/database.dart';
-import 'package:todo_app/models/financial.dart';
-import 'package:todo_app/pages/financial_view_page.dart';
-import 'package:todo_app/widgets/financial_widget.dart';
+import 'package:daily_app/components/database.dart';
+import 'package:daily_app/models/financial.dart';
+import 'package:daily_app/pages/financial_view_page.dart';
+import 'package:daily_app/widgets/financial_widget.dart';
 
 class FinancialsPage extends StatefulWidget {
   const FinancialsPage({super.key});

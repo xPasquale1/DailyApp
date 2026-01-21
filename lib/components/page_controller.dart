@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/pages/financials_page.dart';
-import 'package:todo_app/pages/home_page.dart';
-import 'package:todo_app/pages/settings_page.dart';
-import 'package:todo_app/pages/tasks_page.dart';
+import 'package:daily_app/pages/financials_page.dart';
+import 'package:daily_app/pages/home_page.dart';
+import 'package:daily_app/pages/settings_page.dart';
+import 'package:daily_app/pages/tasks_page.dart';
 
 class PagesController extends StatefulWidget {
   const PagesController({super.key});

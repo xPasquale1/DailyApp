@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_app/components/database.dart';
-import 'package:todo_app/models/financial.dart';
-import 'package:todo_app/models/task.dart';
+import 'package:daily_app/components/database.dart';
+import 'package:daily_app/models/financial.dart';
+import 'package:daily_app/models/task.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

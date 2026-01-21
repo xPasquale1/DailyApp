@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/components/database.dart';
-import 'package:todo_app/models/task.dart';
-import 'package:todo_app/pages/task_view_page.dart';
-import 'package:todo_app/widgets/task_widget.dart';
+import 'package:daily_app/components/database.dart';
+import 'package:daily_app/models/task.dart';
+import 'package:daily_app/pages/task_view_page.dart';
+import 'package:daily_app/widgets/task_widget.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:todo_app/models/financial.dart';
-import 'package:todo_app/models/task.dart';
+import 'package:daily_app/models/financial.dart';
+import 'package:daily_app/models/task.dart';
 
 class DB {
   static Database? _db;
