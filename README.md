@@ -1,4 +1,4 @@
-# daily_app
+# DailyApp
 Eine kleine App welche im Alltag aushilft.
 
 ## Aktuelle Features
