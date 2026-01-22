@@ -1,13 +1,23 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:daily_app/models/financial.dart';
 import 'package:daily_app/models/task.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DB {
   static Database? _db;
 
   static Future<Database> open() async {
     if (_db != null) return _db!;
+    WidgetsFlutterBinding.ensureInitialized();
+
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
     final path = join(await getDatabasesPath(), 'database.db');
     _db = await openDatabase(
       path,
