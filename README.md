@@ -8,5 +8,7 @@ Eine kleine App welche im Alltag aushilft.
     - Unterstützt verschiedenste Währungen
 - Übersicht aller Features auf einem Startbildschirm
 
+![Features](https://github.com/xPasquale1/DailyApp/blob/main/images/ref.jpg, "Features")
+
 ## Unterstützte Sprachen
 - Englisch
