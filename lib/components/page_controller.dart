@@ -1,3 +1,4 @@
+import 'package:daily_app/components/audio_player.dart';
 import 'package:daily_app/pages/music_page.dart';
 import 'package:daily_app/widgets/music_control.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _PagesController extends State<PagesController> {
       body: Stack(
         children: [
           _pages[_currentIndex],
-          Positioned(bottom: 16, left: 16, right: 16, child: MusicControl()),
+          if(GlobalAudioPlayer.isActive) Positioned(bottom: 16, left: 16, right: 16, child: MusicControl()),
         ],
       ),
       bottomNavigationBar: NavigationBar(

@@ -10,11 +10,27 @@ class MusicControl extends StatefulWidget {
 }
 
 class _MusicControlState extends State<MusicControl> {
+  void onPlayPressed() async {
+    if (GlobalAudioPlayer.isPlaying) {
+      await GlobalAudioPlayer.pause();
+    } else {
+      await GlobalAudioPlayer.resume();
+    }
+    setState(() {});
+  }
+
+  void onSkipNextPressed(){
+    // GlobalAudioPlayer.resume();
+  }
+
+  void onSkipPreviousPressed(){
+    // GlobalAudioPlayer.resume();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.grey.shade800,
         borderRadius: BorderRadius.circular(32),
@@ -25,19 +41,19 @@ class _MusicControlState extends State<MusicControl> {
           const Icon(Icons.music_note),
           const Padding(padding: EdgeInsetsGeometry.only(left: 16)),
           Expanded(
-            child: TextScroller(text: GlobalAudioPlayer.currentTrack?.title ?? '<No Track playing>', style: TextStyle(fontSize: 20)),
+            child: TextScroller(text: GlobalAudioPlayer.getCurrentTrack()?.title ?? '<No Track playing>', style: const TextStyle(fontSize: 18)),
           ),
-          const IconButton(
-            onPressed: null,
-            icon: Icon(Icons.skip_previous_rounded),
+          IconButton(
+            onPressed: onSkipPreviousPressed,
+            icon: const Icon(Icons.skip_previous_rounded),
           ),
-          const IconButton(
-            onPressed: null,
-            icon: Icon(Icons.play_arrow_rounded),
+          IconButton(
+            onPressed: onPlayPressed,
+            icon: Icon(GlobalAudioPlayer.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
           ),
-          const IconButton(
-            onPressed: null,
-            icon: Icon(Icons.skip_next_rounded),
+          IconButton(
+            onPressed: onSkipNextPressed,
+            icon: const Icon(Icons.skip_next_rounded),
           ),
         ],
       ),

@@ -32,6 +32,7 @@ class _TextScrollerState extends State<TextScroller> {
     while(mounted){
       await scrollController.animateTo(scrollController.position.maxScrollExtent, duration: Duration(seconds: 2), curve: Curves.linear);
       await Future.delayed(Duration(milliseconds: 500));
+      if(!mounted) break;
       await scrollController.animateTo(0, duration: Duration(seconds: 2), curve: Curves.linear);
       await Future.delayed(Duration(milliseconds: 500));
     }
