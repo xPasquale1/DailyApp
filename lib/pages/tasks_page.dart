@@ -92,17 +92,18 @@ class _TaskPageState extends State<TasksPage> {
         centerTitle: true,
       ),
       body: tasks.isNotEmpty
-          ? ListView(
-              children: tasks.map((task) {
+          ? ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
                 return TaskItem(
-                  task: task,
+                  task: tasks[index],
                   onToggle: (task) => onTaskCompleted(task),
                   onPress: (task) => onTaskPressed(task),
                 );
-              }).toList(),
+              },
             )
           : Container(
-            padding: EdgeInsets.all(64),
+              padding: EdgeInsets.all(64),
               child: Align(
                 child: Text(
                   'There are currently no tasks. Add them using the Plus-Button.',

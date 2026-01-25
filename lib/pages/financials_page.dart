@@ -152,13 +152,14 @@ class _FinancialsPageState extends State<FinancialsPage> {
           ),
           Expanded(
             child: financials.isNotEmpty
-                ? ListView(
-                    children: financials.map((financial) {
+                ? ListView.builder(
+                    itemCount: financials.length,
+                    itemBuilder: (context, index) {
                       return FinancialWidget(
-                        financial: financial,
+                        financial: financials[index],
                         onPress: (financial) => onFinancialPressed(financial),
                       );
-                    }).toList(),
+                    },
                   )
                 : Container(
                     padding: EdgeInsets.all(64),
