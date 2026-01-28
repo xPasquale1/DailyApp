@@ -1,4 +1,5 @@
 import 'package:daily_app/components/currency.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_app/components/database.dart';
 import 'package:daily_app/models/financial.dart';
@@ -18,10 +19,30 @@ class _FinancialsPageState extends State<FinancialsPage> {
   double total = 0;
   List<Financial> financials = [];
 
+  final List<double> weeklyTotal = [0, 0, 0, 0, 0, 0, 0];
+
   @override
   void initState() {
     super.initState();
     loadFinancials();
+  }
+
+  DateTime startOfWeek(DateTime date) {
+    final d = DateTime(date.year, date.month, date.day);
+    return d.subtract(Duration(days: d.weekday - 1));
+  }
+
+  void calculateWeeklyFinancials(List<Financial> financials) {
+    for (int i = 0; i < 7; ++i) {
+      weeklyTotal[i] = 0;
+    }
+    DateTime currentDate = DateTime.now();
+    final weekStart = startOfWeek(currentDate);
+    for (Financial financial in financials) {
+      if (currentDate.isBefore(weekStart)) continue;
+      if (financial.date.weekday > currentDate.weekday) continue;
+      weeklyTotal[financial.date.weekday - 1] += financial.amount;
+    }
   }
 
   Future<void> loadFinancials() async {
@@ -35,6 +56,7 @@ class _FinancialsPageState extends State<FinancialsPage> {
     for (Financial financial in financials) {
       total += financial.amount;
     }
+    calculateWeeklyFinancials(financials);
   }
 
   void onFinancialPressed(Financial financial) async {
@@ -55,6 +77,109 @@ class _FinancialsPageState extends State<FinancialsPage> {
       financials.remove(financial);
       calculateTotal();
     });
+  }
+
+  SideTitleWidget getChartBottomTitles(double value, TitleMeta meta) {
+    Text text = const Text('');
+    switch (value.toInt()) {
+      case 0:
+        text = const Text('Mon');
+        break;
+      case 1:
+        text = const Text('Tue');
+        break;
+      case 2:
+        text = const Text('Wed');
+        break;
+      case 3:
+        text = const Text('Thu');
+        break;
+      case 4:
+        text = const Text('Fri');
+        break;
+      case 5:
+        text = const Text('Sat');
+        break;
+      case 6:
+        text = const Text('Sun');
+        break;
+    }
+    return SideTitleWidget(meta: meta, child: text);
+  }
+
+  Container getWeekOverviewChart() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: EdgeInsets.only(top: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        color: Colors.grey.shade900,
+      ),
+      child: Column(
+        children: [
+          Text('Weekly Overview', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
+          SizedBox(
+            height: 200,
+            child: Container(
+              padding: EdgeInsets.all(16),
+              child: BarChart(
+                BarChartData(
+                  barTouchData: BarTouchData(
+                    enabled: true,
+                    touchTooltipData: BarTouchTooltipData(
+                      getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                        return BarTooltipItem(
+                          Currency.doubleToString(rod.toY),
+                          TextStyle(
+                            color: rod.toY >= 0 ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    topTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: getChartBottomTitles,
+                      ),
+                    ),
+                  ),
+                  gridData: FlGridData(show: false),
+                  borderData: FlBorderData(show: false),
+                  barGroups: List.generate(weeklyTotal.length, (index) {
+                    return BarChartGroupData(
+                      x: index,
+                      barRods: [
+                        BarChartRodData(
+                          toY: weeklyTotal[index],
+                          width: 30,
+                          borderRadius: BorderRadius.circular(12),
+                          color: weeklyTotal[index] >= 0
+                              ? Colors.green
+                              : Colors.red,
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> addFinancialDialog() async {
@@ -150,25 +275,30 @@ class _FinancialsPageState extends State<FinancialsPage> {
               ),
             ),
           ),
+          // getWeekOverviewChart(),
           Expanded(
-            child: financials.isNotEmpty
-                ? ListView.builder(
-                    itemCount: financials.length,
-                    itemBuilder: (context, index) {
-                      return FinancialWidget(
-                        financial: financials[index],
-                        onPress: (financial) => onFinancialPressed(financial),
-                      );
-                    },
-                  )
-                : Container(
+            child: ListView.builder(
+              itemCount: financials.isEmpty ? 2 : financials.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return getWeekOverviewChart();
+                }
+                if (financials.isEmpty) {
+                  return Container(
                     padding: EdgeInsets.all(64),
                     child: Align(
                       child: Text(
                         'There are currently no entries. Add them using the Plus-Button.',
                       ),
                     ),
-                  ),
+                  );
+                }
+                return FinancialWidget(
+                  financial: financials[index - 1],
+                  onPress: (financial) => onFinancialPressed(financial),
+                );
+              },
+            ),
           ),
         ],
       ),
